@@ -7,9 +7,15 @@ from analisis_canal import (
 if "calibracion" not in st.session_state:
     st.session_state.calibracion = None
 
-st.title("Analisis colorimetrico de microcanales")
+st.title("Analisis colorimetrico de microcanales ٩(^ᗜ^ )و ")
 
-st.header("1. Imagen de referencia")
+st.header("1. Imagen de referencia ⭑.ᐟ")
+
+st.markdown("Suba **una sola imagen** de tu canal del canal a evaluar con **buen** contraste ٩(⎚-⎚)"
+             "-por ejemplo, la imagen con la bifase o cuelquiera donde el canal se vea calaramente distinto al fondo-"
+             "Esta imagen se usa **una sola vez** para medir el ancho real del canal en píxeles" 
+             "Ese ancho se usará para detectar el canal en todas las demás imágenes que subas más adelante.")
+
 canal_oscuro = st.checkbox("El canal se ve mas oscuro que el fondo", value=True)
 archivo_referencia = st.file_uploader(
     "Sube la imagen de referencia (buen contraste)",
@@ -27,7 +33,12 @@ if archivo_referencia is not None:
     else:
         st.error(resultado["motivo"])
 
-st.header("2. Sustancia y grupos de concentracion")
+st.header("2. Sustancia y grupos de concentracion ⭑.ᐟ")
+
+st.markdown("aqui defines tus puntos de calibración conocidos, Necesitas **al menos 2 grupos**"
+            "-por ejemplo, un 'blanco'de concentración 0 y 'maxima' con la concentración más alta-"
+            ", cada uno con su respectiva imagen de referencia."
+            "puedes subir varias imagenes por grupo, entre mas replicas, mas confiable queda la calibracion")
 
 grupos = []
 if ancho_canal_ref is None:
@@ -62,10 +73,16 @@ else:
         for g in grupos:
             st.write(f"- **{g['nombre']}**: {g['concentracion']} mg/L, {len(g['imagenes'])} imagen(es)")
 
-st.header("3. Calibracion")
+st.header("3. Calibracion ⭑.ᐟ")
+
+st.markdown(
+    "Al presionar el boton, el programa detecta el canal en cada imagen de tus grupos, mide su "
+    "intensidad promedio, y ajusta una recta entre intensidad y concentracion conocida. El "
+    "**R²** te dice que tan bien se ajustan tus datos a esa recta -mas cerca de 1.0 es mejor-."
+)
 
 if len(grupos) < 2:
-    st.info("Necesitas al menos 2 grupos con imagenes subidas (seccion 2) para calibrar.")
+    st.info("Necesitas al menos 2 grupos con imagenes subidas (seccion 2) para calibrar ٩(ˋ ◠ ˊ )و")
 else:
     if st.button("Ejecutar calibracion", type="primary"):
         with st.spinner("Detectando canal y ajustando la curva de calibracion..."):
@@ -88,9 +105,16 @@ if st.session_state.calibracion is not None:
                     st.write(f"{fila['grupo']} - replica {fila['replica']} (confianza={fila.get('confianza', 0):.2f})")
                     st.pyplot(fila["figura"])
     else:
-        st.error(resultado_cal.get("motivo", "No se pudo calibrar."))
+        st.error(resultado_cal.get("motivo", "No se pudo calibrar.(˙◠˙)"))
 
-st.header("4. Aplicar la calibracion a una imagen de gradiente")
+st.header("4. Aplicar la calibracion a una imagen de gradiente ⭑.ᐟ")
+
+st.markdown(
+    "Sube una imagen con un gradiente de concentracion -por ejemplo, un flujo bifase- para "
+    "convertir su perfil de intensidad en un perfil real de concentracion, usando la ecuacion de "
+    "calibracion de la seccion anterior. Si una parte del perfil resulta fuera del rango que "
+    "calibraste, la app te avisa -esa zona es una extrapolacion, no una medicion directa.-"
+)
 
 calibracion_lista = st.session_state.calibracion is not None and st.session_state.calibracion.get("exito")
 
@@ -120,6 +144,6 @@ else:
                 pct = res_grad["porcentaje_fuera_de_rango"]
                 st.write(f"Porcentaje del perfil fuera del rango calibrado (extrapolacion): {pct:.1f}%")
                 if pct > 20:
-                    st.warning("Una parte importante del perfil esta fuera del rango calibrado -- interpreta esa zona con cautela.")
+                    st.warning("Una parte importante del perfil esta fuera del rango calibrado - interpreta esa zona con cautela.")
         else:
-            st.error(res_grad.get("motivo", "No se pudo procesar la imagen de gradiente."))
+            st.error(res_grad.get("motivo", "No se pudo procesar la imagen de gradiente. (˙◠˙) "))
