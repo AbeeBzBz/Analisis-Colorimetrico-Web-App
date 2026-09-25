@@ -7,7 +7,7 @@ from analisis_canal import (
 if "calibracion" not in st.session_state:
     st.session_state.calibracion = None
 
-st.title("Analisis colorimetrico de microcanales ٩(^ᗜ^ )و ")
+st.title("Determinación de la concentración dentro de microcanales mediante el procesamiento digital de imágenes automatizado ٩(^ᗜ^ )و ")
 
 st.header("1. Imagen de referencia ⭑.ᐟ")
 
