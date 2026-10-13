@@ -1,4 +1,4 @@
-# Cuantificación colorimétrica de concentración mediante detección automática de regiones de interés y procesamiento digital de imágenes en microcanales.
+#  Determinación de la concentración dentro de microcanales mediante el procesamiento digital de imágenes automatizado
 
 ** ¿Qué es esto? (╭ರ_•)...? **
 
